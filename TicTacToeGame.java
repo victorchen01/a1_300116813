@@ -17,206 +17,199 @@
 
 public class TicTacToeGame {
 
-	// The board of the game, stored as a one dimension array.
-	private int[] board;
+ // The board of the game, stored as a one dimension array.
+ private CellValue[] board;
 
   // level records the number of rounds that have beennplayed so far
-	private int level;
+ private int level;
 
   // gameState records the current state of the game.
-	private GameState gameState;
+ private GameState gameState;
 
   // lines is the number of lines in the grid
-	private int lines;
+ private int lines;
 
   // columns is the number of columns in the grid
-	private int columns;
+ private int columns;
 
-   /**
-	* sizeWin is the number of cell of the same type
-	* that must be aligned to win the game
-	*/
-	private int sizeWin;
+  /**
+ * sizeWin is the number of cell of the same type
+ * that must be aligned to win the game
+ */
+ private int sizeWin;
 
-   /**
-	* default constructor, for a game of 3x3, which must
-	* align 3 cells
-	*/
-	public TicTacToeGame()
-	{
-		this.columns = 3;
-		this.lines = 3;
-		this.sizeWin = 3;
-		this.gameState = GameState.PLAYING;
-		this.level = 0;
-		this.board = new int[columns];
-	}
+  /**
+ * default constructor, for a game of 3x3, which must
+ * align 3 cells
+ */
+ public TicTacToeGame()
+ {
+  this.TicTacToeGame(3, 3, 3);
+  this.gameState = GameState.PLAYING;
+ }
 
-	/**
-	* constructor allowing to specify the number of lines
-	* and the number of columns for the game. 3 cells must
-	* be aligned.
- 	* @param lines
+ /**
+ * constructor allowing to specify the number of lines
+ * and the number of columns for the game. 3 cells must
+ * be aligned.
+  * @param lines
   *  the number of lines in the game
   * @param columns
   *  the number of columns in the game
-	*/
-	public TicTacToeGame(int lines, int columns)
-	{
-		this.columns = columns;
-		this.lines = lines;
-		this.sizeWin = 3;
-		this.gameState = GameState.PLAYING;
-		this.level = 0;
-		this.board = new int[columns];
-	}
+ */
+ public TicTacToeGame(int lines, int columns)
+ {
+  this.TicTacToeGame(lines, columns, 3);
+ }
 
   /**
-	* constructor allowing to specify the number of lines
-	* and the number of columns for the game, as well as
-	* the number of cells that must be aligned to win.
- 	* @param lines
+ * constructor allowing to specify the number of lines
+ * and the number of columns for the game, as well as
+ * the number of cells that must be aligned to win.
+  * @param lines
   *  the number of lines in the game
   * @param columns
   *  the number of columns in the game
   * @param sizeWin
   *  the number of cells that must be aligned to win.
-	*/
-	public TicTacToeGame(int lines, int columns, int sizeWin)
-	{
-		this.columns = columns;
-		this.lines = lines;
-		this.sizeWin = 3;
-		this.gameState = GameState.PLAYING;
-		this.level = 0;
-		this.board = new int[columns];
-	}
+ */
+ public TicTacToeGame(int lines, int columns, int sizeWin)
+ {
+  this.columns = columns;
+  this.lines = lines;
+  this.sizeWin = sizeWin;
+  this.gameState = GameState.PLAYING;
+  this.level = 0;
+  this.board = new CellValue[columns*columns];
+  // Initialize empty array with empty enum
+  for(int i=0;i<board.length;i++) {board[i] = CellValue.EMPTY;}
+ }
 
   /**
-	* getter for the variable lines
-	* @return
-	* 	the value of lines
-	*/
-	public int getLines() {return this.lines;}
+ * getter for the variable lines
+ * @return the value of lines
+ */
+ public int getLines() {return this.lines;}
 
   /**
-	* getter for the variable columns
-	* @return
-	* the value of columns
-	*/
-	public int getColumns() {return this.columns;}
+ * getter for the variable columns
+ * @return the value of columns
+ */
+ public int getColumns() {return this.columns;}
 
-	/**
-	* getter for the variable level
-	* @return
-	* the value of level
-	*/
-	public int getLevel() {return this.level;}
+ /**
+ * getter for the variable level
+ * @return the value of level
+ */
+ public int getLevel() {return this.level;}
 
   /**
-	* getter for the variable sizeWin
-	* @return
-	* the value of sizeWin
-	*/
-	public int getSizeWin() {return this.sizeWin;}
+ * getter for the variable sizeWin
+ * @return the value of sizeWin
+ */
+ public int getSizeWin() {return this.sizeWin;}
 
   /**
-	* getter for the variable gameState
-	* @return
-	* the value of gameState
-	*/
-	public GameState getGameState() {return this.gameState;}
+ * getter for the variable gameState
+ * @return the value of gameState
+ */
+ public GameState getGameState() {return this.gameState;}
 
   /**
-	* returns the cellValue that is expected next,
-	* in other word, which played (X or O) should
-	* play next.
-	* This method does not modify the state of the
-	* game.
-	* @return
-  * the value of the enum CellValue corresponding
-  * to the next expected value.
-	*/
-	public CellValue nextCellValue()
-	{
-		// Current player is X
-		if(this.level % 2 || this.level == 0) {return CellValue.O;}
-		// Current player is O
-		else {return CellValue.X}
-	}
+ * returns the cellValue that is expected next,
+ * in other word, which played (X or O) should
+ * play next.
+ * This method does not modify the state of the
+ * game.
+ * @return value of the enum CellValue corresponding to the next expected value.
+ */
+ public CellValue nextCellValue()
+ {
+  // Current player is X
+  if(this.level % 2 || this.level == 0) {return CellValue.O;}
+  // Current player is O
+  else {return CellValue.X;}
+ }
 
   /**
-	* returns the value  of the cell at
-	* index i.
-	* If the index is invalid, an error message is
-	* printed out. The behaviour is then unspecified
- 	* @param i
-  *  the index of the cell in the array board
-  * @return
-  *  the value at index i in the variable board.
-	*/
-	public CellValue valueAt(int i)
-	{
-		if(i<0 || i >= (this.columns)**2) {System.out.println("Error: That index is invalid.");}
-		else
-		{return board[i].CellValue;}
-	}
+ * returns the value of the cell at index i.
+ * If the index is invalid, an error message is
+ * printed out. The behaviour is then unspecified
+  * @param i the index of the cell in the array board
+  * @return the value at index i in the variable board.
+ */
+ public CellValue valueAt(int i)
+ {
+  if(i<0 || i >= (this.columns)*(this.columns)) {System.out.println("Error: That index is invalid.");}
+  else {return board[i];}
+ }
 
    /**
-	* This method is called when the next move has been
-	* decided by the next player. It receives the index
-	* of the cell to play as parameter.
-	* If the index is invalid, an error message is
-	* printed out. The behaviour is then unspecified
-	* If the chosen cell is not empty, an error message is
-	* printed out. The behaviour is then unspecified
-	* If the move is valide, the board is updated, as well
-	* as the state of the game.
-	* To faciliate testing, is is acceptable to keep playing
-	* after a game is already won. If that is the case, the
-	* a message should be printed out and the move recorded.
-	* the  winner of the game is the player who won first
- 	* @param i
+ * This method is called when the next move has been
+ * decided by the next player. It receives the index
+ * of the cell to play as parameter.
+ * If the index is invalid, an error message is
+ * printed out. The behaviour is then unspecified
+ * If the chosen cell is not empty, an error message is
+ * printed out. The behaviour is then unspecified
+ * If the move is valide, the board is updated, as well
+ * as the state of the game.
+ * To faciliate testing, is is acceptable to keep playing
+ * after a game is already won. If that is the case, the
+ * a message should be printed out and the move recorded.
+ * the  winner of the game is the player who won first
+  * @param i
   *  the index of the cell in the array board that has been
   * selected by the next player
-	*/
-	public void play(int i)
-	{
-
-	}
+ */
+ public void play(int i)
+ {
+  // Index given is out of bounds
+  if(i<0 || i >= (this.columns)*(this.columns)) {System.out.println("That index is out of bounds");}
+  else if(board[i] != null) {System.out.println("That cell is not empty");}
+  else
+  {
+   //if(){;}
+   //else{;}
+  }
+ }
 
 
    /**
-	* A helper method which updates the gameState variable
-	* correctly after the cell at index i was just set in
-	* the method play(int i)
-	* The method assumes that prior to setting the cell
-	* at index i, the gameState variable was correctly set.
-	* it also assumes that it is only called if the game was
-	* not already finished when the cell at index i was played
-	* (i.e. the game was playing). Therefore, it only needs to
-	* check if playing at index i has concluded the game, and if
-	* set the oucome correctly
-	*
- 	* @param i
+ * A helper method which updates the gameState variable
+ * correctly after the cell at index i was just set in
+ * the method play(int i)
+ * The method assumes that prior to setting the cell
+ * at index i, the gameState variable was correctly set.
+ * it also assumes that it is only called if the game was
+ * not already finished when the cell at index i was played
+ * (i.e. the game was playing). Therefore, it only needs to
+ * check if playing at index i has concluded the game, and if
+ * set the oucome correctly
+ *
+  * @param i
   *  the index of the cell in the array board that has just
   * been set
-	*/
-	private void setGameState(int i)
-	{
+ */
+ private void setGameState(int i)
+ {
+  // Check draw
+  for(int i=0;i<board.length;i++){
+   //if(board[i].CellValue == )
+  }
 
-	}
+ }
 
   /**
-	* Returns a String representation of the game matching
-	* the example provided in the assignment's description
-	*
- 	* @return
+ * Returns a String representation of the game matching
+ * the example provided in the assignment's description
+ *
+  * @return
   *  String representation of the game
-	*/
-	public String toString()
-	{
+ */
+ public String toString()
+ {
 
-	}
+ }
 
 }

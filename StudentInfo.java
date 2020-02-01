@@ -23,9 +23,9 @@ public class StudentInfo {
     public static void display() {
 
         System.out.println("************************************************************");
-        System.out.println("*                                                          *");
-        System.out.println("*                                                          *");
-        System.out.println("*                                                          *");
+        System.out.println("*                    Victor Chen                           *");
+        System.out.println("*                     300116813                            *");
+        System.out.println("*                   ITI1121-C04                            *");
         System.out.println("*                                                          *");
         System.out.println("************************************************************");
         System.out.println();

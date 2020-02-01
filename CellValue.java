@@ -15,7 +15,7 @@
 
 enum CellValue
 {
-  EMPTY,
-  X,
-  O
+  EMPTY (0),
+  X (1),
+  O(2);
 }
